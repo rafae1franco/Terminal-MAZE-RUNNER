@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+#define tam 5
+
+int main() {
+    int v[2] = {0, 0}, v_ant[2] = {0, 0};
+    char dir;
+    char col[tam][tam] = {
+        {'.', '.', '.', '#', '.'},
+        {'.', '#', '.', '#', '.'},
+        {'.', '#', '.', '.', '.'},
+        {'.', '.', '.', '#', 'G'},
+        {'.', '#', '.', '.', '.'}
+    };
+
+    // Menu inicial
+    printf("Bem-vindo ao Maze Runner (Busca Gulosa)!\n");
+    printf("Digite 'E' para entrar no jogo ou 'Q' para sair: ");
+    scanf(" %c", &dir);
+
+    if (dir == 'Q' || dir == 'q') {
+        printf("Você saiu do jogo.\n");
+        return 0;
+    }
+
+    while (true) {
+        // Imprime a matriz com o 'S' na posição atual
+        for (int i = 0; i < tam; i++) {
+            for (int j = 0; j < tam; j++) {
+                if (i == v[0] && j == v[1]) {
+                    printf("S  ");
+                } else {
+                    printf("%c  ", col[i][j]);
+                }
+            }
+            printf("\n");
+        }
+
+        // Verifica se chegou no destino
+        if (col[v[0]][v[1]] == 'G') {
+            printf("\nVocê chegou no destino!!!\n");
+            break;
+        }
+
+        // Distância de Manhattan da posição atual
+        int manh = abs(v[0] - 3) + abs(v[1] - 4);
+        printf("\nDistância atual até o objetivo: %d\n", manh);
+
+        printf("-------------------------------------\n");
+
+        // Salva posição anterior
+        v_ant[0] = v[0];
+        v_ant[1] = v[1];
+
+        // Cálculo da distância para cada movimento possível
+        int posXnovaMo1 = v[0] - 1;
+        int posYnovaMo1 = v[1];
+        int manh1 = abs(posXnovaMo1 - 3) + abs(posYnovaMo1 - 4);
+        if (posXnovaMo1 < 0 || col[posXnovaMo1][posYnovaMo1] == '#') manh1 = 1000;
+
+        int posXnovaMo2 = v[0] + 1;
+        int posYnovaMo2 = v[1];
+        int manh2 = abs(posXnovaMo2 - 3) + abs(posYnovaMo2 - 4);
+        if (posXnovaMo2 >= tam || col[posXnovaMo2][posYnovaMo2] == '#') manh2 = 1000;
+
+        int posXnovaMo3 = v[0];
+        int posYnovaMo3 = v[1] - 1;
+        int manh3 = abs(posXnovaMo3 - 3) + abs(posYnovaMo3 - 4);
+        if (posYnovaMo3 < 0 || col[posXnovaMo3][posYnovaMo3] == '#') manh3 = 1000;
+
+        int posXnovaMo4 = v[0];
+        int posYnovaMo4 = v[1] + 1;
+        int manh4 = abs(posXnovaMo4 - 3) + abs(posYnovaMo4 - 4);
+        if (posYnovaMo4 >= tam || col[posXnovaMo4][posYnovaMo4] == '#') manh4 = 1000;
+
+        // Escolhe a menor distância (Busca Gulosa)
+        if (manh1 <= manh2 && manh1 <= manh3 && manh1 <= manh4) {
+            v[0] = posXnovaMo1;
+            v[1] = posYnovaMo1;
+        } else if (manh2 <= manh1 && manh2 <= manh3 && manh2 <= manh4) {
+            v[0] = posXnovaMo2;
+            v[1] = posYnovaMo2;
+        } else if (manh3 <= manh1 && manh3 <= manh2 && manh3 <= manh4) {
+            v[0] = posXnovaMo3;
+            v[1] = posYnovaMo3;
+        } else if (manh4 <= manh1 && manh4 <= manh2 && manh4 <= manh3) {
+            v[0] = posXnovaMo4;
+            v[1] = posYnovaMo4;
+        }
+
+        // Verifica validade do movimento
+        if (v[0] < 0 || v[0] >= tam || v[1] < 0 || v[1] >= tam || col[v[0]][v[1]] == '#') {
+            printf("\nMovimento inválido! Você bateu.\n");
+            // Volta para posição anterior
+            v[0] = v_ant[0];
+            v[1] = v_ant[1];
+        }
+    }
+
+    return 0;
+}
