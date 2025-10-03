@@ -1,62 +1,81 @@
 # 🧩 TerminalMazeRunner
 
 ## 🇧🇷 Sobre o Projeto
+O **TerminalMazeRunner** é um mini-jogo desenvolvido em linguagem C para ser executado diretamente no terminal.  
 
-TerminalMazeRunner é um mini-jogo em linguagem C executado no terminal. O objetivo é navegar por um labirinto 5x5, evitando obstáculos (`#`) até alcançar o destino (`G`). O jogador se movimenta usando as teclas `W`, `A`, `S` e `D`, e recebe como dica a distância de Manhattan até o objetivo. O jogo verifica movimentos inválidos, como colisões e saídas do mapa, e exibe o labirinto atualizado a cada jogada.
+O objetivo é guiar um robô (marcado como **S**) através de um labirinto 5x5, desviando de obstáculos (`#`) até alcançar o objetivo (marcado como **G**).  
 
-### 🎮 Controles
+O jogador pode controlar o robô manualmente ou deixar que o programa utilize o **algoritmo de Busca Gulosa (Greedy Best-First Search)** para encontrar o caminho automaticamente.  
 
-- `W` – Cima
-- `A` – Esquerda
-- `S` – Baixo
-- `D` – Direita
+---
 
-### 📦 Funcionalidades
+## 🗺️ Estrutura do Labirinto
+Exemplo de mapa fixo utilizado no projeto:
 
-- Interface em texto no terminal
-- Verificação de colisões com obstáculos e bordas
-- Cálculo da distância de Manhattan até o destino
-- Labirinto fixo com visualização da posição atual (`S`) do jogador
+0 1 2 3 4
+0 S . . # .
+1 . # . # .
+2 . # . . .
+3 . . . # G
+4 . # . . .
 
-### 🛠️ Requisitos
+yaml
+Copiar código
 
-- Compilador C (ex: `gcc`)
-- Terminal
+- `S` → Posição inicial do robô  
+- `G` → Objetivo  
+- `#` → Obstáculo  
+- `.` → Caminho livre  
 
-### ▶️ Como compilar e executar
+---
 
-```bash
-gcc main.c -o maze
+## 🎮 Controles
+Movimentos permitidos (sem diagonais):  
+
+- `W` → Cima (Norte)  
+- `S` → Baixo (Sul)  
+- `A` → Esquerda (Oeste)  
+- `D` → Direita (Leste)  
+- `Q` → Sair do jogo  
+
+---
+
+## 📦 Funcionalidades
+- Interface em texto no terminal  
+- Impressão do labirinto atualizado a cada jogada  
+- Verificação de colisões (obstáculos e bordas do mapa)  
+- Cálculo da **distância de Manhattan** a cada movimento  
+- Movimentos com custo uniforme (**C = 1**)  
+- Algoritmo de **Busca Gulosa** para movimentação automática do robô  
+
+---
+
+## 🛠️ Estrutura do Código
+O projeto foi modularizado em funções para melhor organização:  
+- `imprimir_labirinto()` → Exibe o labirinto no terminal  
+- `processar_movimento()` → Atualiza a posição do robô a partir do input  
+- `calcular_distancia()` → Retorna a distância de Manhattan até o objetivo  
+- `busca_gulosa()` → Executa a navegação automática  
+
+---
+
+## 🚀 Como Executar
+1. Compile o código com um compilador C (exemplo com `gcc`):  
+   ```bash
+   gcc main.c -o maze
+Execute no terminal:
+
+bash
+Copiar código
 ./maze
+📌 Requisitos
+Compilador C (ex: gcc)
 
---------------------------------------------------------------------------
-# 🧩 TerminalMazeRunner
+Terminal
 
-## About the Project
+🔮 Próximos Passos
+Implementar mapas dinâmicos e maiores
 
-TerminalMazeRunner is a mini terminal-based C game. The goal is to navigate through a 5x5 maze, avoiding obstacles (`#`) and reaching the goal (`G`). The player moves using the `W`, `A`, `S`, and `D` keys, and the game provides a hint via the Manhattan distance to the goal. Invalid moves are detected, and the maze updates after each input.
+Adicionar níveis de dificuldade
 
-### 🎮 Controls
-
-- `W` – Up  
-- `A` – Left  
-- `S` – Down  
-- `D` – Right  
-
-### 📦 Features
-
-- Text-based interface in the terminal  
-- Collision detection with walls and boundaries  
-- Manhattan distance to the goal as a hint  
-- Static maze with live position tracking (`S`)  
-
-### 🛠️ Requirements
-
-- C compiler (e.g., `gcc`)  
-- Terminal  
-
-### ▶️ How to Compile and Run
-
-```bash
-gcc main.c -o maze
-./maze
+Criar um modo de comparação entre jogada manual e Busca Gulosa
